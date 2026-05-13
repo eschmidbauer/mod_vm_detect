@@ -1,0 +1,33 @@
+<configuration name="vm_detect.conf" description="wav2vec2 voicemail detector for FreeSWITCH">
+  <settings>
+    <!-- Path to the wav2vec2 classifier weights directory (int8 recommended) -->
+    <param name="weights-path" value="$${data_dir}/vm_detect/weights-int8"/>
+
+    <!-- Path to the FireRed VAD weights binary file -->
+    <param name="fireredvad-weights-path" value="$${data_dir}/vm_detect/fireredvad.bin"/>
+
+    <!-- Path to the FireRed VAD CMVN normalization JSON -->
+    <param name="fireredvad-cmvn-path" value="$${data_dir}/vm_detect/fireredvad.json"/>
+
+    <!-- Which 2 s slice of the segment to classify:
+           first   - first 2 s anchored at audio start (matches the standalone
+                     CLI / prep_audio.py behavior; preserves any leading silence)
+           last    - last 2 s of the VAD-detected speech segment
+           average - average of first-2s + last-2s windows -->
+    <param name="window-policy" value="first"/>
+
+    <!-- If max(probs) < this, label=uncertain. Set to 0.0 to always commit. -->
+    <param name="min-confidence" value="0.0"/>
+
+    <!-- Per-call intra-op threads for sgemm. Keep at 1 for highest concurrency. -->
+    <param name="intra-op-threads" value="1"/>
+
+    <!-- Fire vm_detect::result event on every speech_end. Set false to drive via API only. -->
+    <param name="emit-on-speech-end" value="true"/>
+
+    <!-- AED non-speech gate. If FireRed AED rates the segment as music+noise
+         >= this threshold, the wav2vec label is downgraded to "uncertain".
+         0.0 disables the gate (AED still runs and is logged for visibility). -->
+    <param name="aed-nonspeech-threshold" value="0.0"/>
+  </settings>
+</configuration>

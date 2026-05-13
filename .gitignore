@@ -53,3 +53,36 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+.venv
+notes.txt
+
+# CMake / build output
+build/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Editor
+.vscode/
+.idea/
+
+# Vendored wav2vec build binaries (when building with legacy Makefile)
+src/wav2vec/test_concurrent
+src/wav2vec/bench_concurrent
+src/wav2vec/test_sgemm
+src/wav2vec/vm_detect
+.env
+
+docker/
+.DS_Store
+.dockerignore
+weights
